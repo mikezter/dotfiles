@@ -126,4 +126,6 @@ theme.tooltip_border_color = '#535d6c'
 
 theme.mpd_text_width      = 25
 
+theme.wallpaper_dir = "/media/Attic/phone"
+
 return theme

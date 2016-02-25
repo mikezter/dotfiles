@@ -32,6 +32,7 @@ do
 end
 
 beautiful.init("/home/mike/.config/awesome/theme.lua")
+awful.util.spawn("feh --bg-max -z -r " .. beautiful.wallpaper_dir)
 
 toto_layout = require("toto_layout")
 two_thirds_layout = require("two_thirds_layout")
