@@ -41,9 +41,9 @@ local layouts =
 {
     two_thirds_layout,
     toto_layout,
+    awful.layout.suit.tile.left,
     awful.layout.suit.floating,
     awful.layout.suit.tile,
-    awful.layout.suit.tile.left,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
@@ -61,7 +61,11 @@ modkey   = "Mod4"
 
 tags = {}
 for s = 1, screen.count() do
-  tags[s] = awful.tag({ 1, 2, 3, 4, 5}, s, layouts[1])
+  tags[s] = awful.util.table.join(
+    awful.tag({"B"}, s, layouts[1]),
+    awful.tag({2}, s, layouts[2]),
+    awful.tag({3, 4, 5}, s, layouts[3])
+  )
 end
 
 mywibox = {}
