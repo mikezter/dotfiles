@@ -34,9 +34,11 @@ end
 beautiful.init("/home/mike/.config/awesome/theme.lua")
 
 toto_layout = require("toto_layout")
+two_thirds_layout = require("two_thirds_layout")
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
 {
+    two_thirds_layout,
     toto_layout,
     awful.layout.suit.floating,
     awful.layout.suit.tile,
@@ -316,7 +318,7 @@ awful.rules.rules = {
   {
     rule = {},
     properties = {
-      border_width     = beautiful.border_width,
+      border_width     = 1,
       size_hints_honor = false,
       border_color     = beautiful.border_normal,
       focus            = true,
