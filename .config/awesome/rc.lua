@@ -33,14 +33,32 @@ end
 
 beautiful.init("/home/mike/.config/awesome/theme.lua")
 
-local layout = require("layout")
+toto_layout = require("toto_layout")
+-- Table of layouts to cover with awful.layout.inc, order matters.
+local layouts =
+{
+    toto_layout,
+    awful.layout.suit.floating,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.left,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile.top,
+    awful.layout.suit.fair,
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.max,
+    awful.layout.suit.max.fullscreen,
+    awful.layout.suit.magnifier
+}
+-- }}}
 
 terminal = "terminator"
 modkey   = "Mod4"
 
 tags = {}
 for s = 1, screen.count() do
-  tags[s] = awful.tag({ 1, 2, 3, 4, 5}, s, layout)
+  tags[s] = awful.tag({ 1, 2, 3, 4, 5}, s, layouts[1])
 end
 
 mywibox = {}
@@ -73,7 +91,19 @@ tasklist.buttons = awful.button({ }, 1, function (c)
   end
 end)
 
+mylayoutbox = {}
+
 for s = 1, screen.count() do
+  -- Create an imagebox widget which will contains an icon indicating which layout we're using.
+  -- We need one layoutbox per screen.
+  mylayoutbox[s] = awful.widget.layoutbox(s)
+
+  mylayoutbox[s]:buttons(awful.util.table.join(
+    awful.button({ }, 1, function () awful.layout.inc(layouts, 1) end),
+    awful.button({ }, 3, function () awful.layout.inc(layouts, -1) end),
+    awful.button({ }, 4, function () awful.layout.inc(layouts, 1) end),
+    awful.button({ }, 5, function () awful.layout.inc(layouts, -1) end)))
+
   promptbox[s] = awful.widget.prompt()
   taglist[s] = awful.widget.taglist(s, awful.widget.taglist.filter.all, taglist.buttons)
   tasklist[s] = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist.buttons)
@@ -91,6 +121,8 @@ for s = 1, screen.count() do
   right_layout:add(xkb.widget)
   right_layout:add(separator)
   right_layout:add(clock)
+  right_layout:add(separator)
+  right_layout:add(mylayoutbox[s])
 
   local layout = wibox.layout.align.horizontal()
   layout:set_left(left_layout)
@@ -98,6 +130,7 @@ for s = 1, screen.count() do
   layout:set_right(right_layout)
 
   mywibox[s]:set_widget(layout)
+
 end
 
 root.buttons(awful.util.table.join(
@@ -106,6 +139,8 @@ root.buttons(awful.util.table.join(
 ))
 
 globalkeys = awful.util.table.join(
+  awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
+  awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
   awful.key({ modkey, }, "Left",   awful.tag.viewprev),
   awful.key({ modkey, }, "Right",  awful.tag.viewnext),
   awful.key({ modkey, }, "Escape", awful.tag.history.restore),
@@ -116,7 +151,6 @@ globalkeys = awful.util.table.join(
   awful.key({ modkey, }, "d", function() awful.client.focus.global_bydirection("right") end),
   awful.key({ modkey, }, "w", function() awful.client.focus.global_bydirection("up") end ),
   awful.key({ modkey, }, "s", function() awful.client.focus.global_bydirection("down") end),
-  awful.key({ modkey, }, "space", xkb.switch),
   awful.key({ modkey, }, "Tab", function()
     awful.client.focus.byidx(1)
   end),

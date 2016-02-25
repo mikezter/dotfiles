@@ -69,5 +69,6 @@ local function arrange(screen)
 end
 
 return {
-  arrange = arrange
+  arrange = arrange,
+  name = "toto"
 }
