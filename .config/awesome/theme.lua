@@ -111,7 +111,7 @@ theme.border_width  = 2
 theme.border_normal = "#000000"
 theme.border_focus  = "#FF0000"
 theme.border_marked = "#91231c"
-theme.client_gap    = 2
+theme.client_gap    = 0
 theme.bg_systray1   = '#1F2428'
 theme.bg_systray2   = '#313131'
 
