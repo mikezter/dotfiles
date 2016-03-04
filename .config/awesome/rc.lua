@@ -4,6 +4,7 @@ require("awful.autofocus")
 local wibox = require("wibox")
 local beautiful = require("beautiful")
 local naughty = require("naughty")
+local gears = require("gears")
 
 -- package.path = package.path .. ';' .. '/home/mike/toto/dotfiles/.config/awesome/?.lua'
 
@@ -32,7 +33,15 @@ do
 end
 
 beautiful.init("/home/mike/.config/awesome/theme.lua")
-awful.util.spawn("feh --bg-max -z -r " .. beautiful.wallpaper_dir)
+
+function feh_update()
+  awful.util.spawn("feh --bg-max -z -r " .. beautiful.wallpaper_dir)
+end
+
+feh_update()
+feh_timer = timer({ timeout = 30 })
+feh_timer:connect_signal("timeout", feh_update)
+feh_timer:start()
 
 
 terminal = "terminator"
